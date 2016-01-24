@@ -44,7 +44,7 @@
 	});
     }
 	// 这个必须最后执行
-	if (content.match(/^(.+)$/i)) {
+	if (content.match(/^(?!help|list|top|cmd).*/i)) {
 	  var client  = redis.createClient('6379', '127.0.0.1');
 	  
       var key = content;

@@ -9,7 +9,8 @@
 
   Path = require('path');
   
-  var process = require('child_process');
+  var proc = require('child_process');
+  
 
   /*
    @param content 消息内容
@@ -23,20 +24,24 @@
       send(HELP_INFO);
     }
     if (content.match(/^list$/i)) {
-      send(HELP_INFO);
+      send("192.168.200.216\n192.168.200.215");
     }
 	if (content.match(/^top$/i)) {
-	   var cmd="sh ./lib/top.sh"
-	   process.exec(cmd,function(err,stdout,stderr){
-			send(stdout);
+	   var cmd="sh "+__dirname+"/../lib/top.sh"
+	   proc.exec(cmd,function(err,stdout,stderr){
+			if(err){
+				send(stderr);
+			}else{
+				send(stdout);
+			}
 	   });
     }
 	if (content.match(/^top\s+(.*)$/i)) {
       var array = content.split(/\s+/);
       var ip = array[1];
-	  var sshcmd="ssh "+ip+" sh <./lib/top.sh "
+	  var sshcmd="ssh "+ip+" sh <"+__dirname+"/../lib/top.sh "
 	  console.log(sshcmd);
-	  process.exec(sshcmd,function(err,stdout,stderr){
+	  proc.exec(sshcmd,function(err,stdout,stderr){
 			if(err){
 				send("执行主机:"+ip+ "\n"+stderr);
 			}else{
@@ -50,7 +55,7 @@
 	  var cmd = array.splice(2).join(' ')
 	  var sshcmd="ssh "+ip+" "+cmd;
 	  console.log(sshcmd);
-	  process.exec(sshcmd,function(err,stdout,stderr){
+	  proc.exec(sshcmd,function(err,stdout,stderr){
 			if(err){
 				send(stderr);
 			}else{
