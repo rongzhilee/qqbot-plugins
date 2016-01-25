@@ -18,7 +18,16 @@
 
   module.exports = function(content, send, robot, message) {
     
-	content = content.replace(/(^/s*)/g, "")//针对qq群的一个bug，开头有空格
+	content = content.replace(/^\s\s*/, '')//针对qq群的一个bug，开头有空格
+	if(message && ( message.from_group || message.from_discuss )){
+		//如果是组或者讨论组，需要使用@，否则禁言
+		if(content.charAt(0) == '@'){
+			content = content.substring(1);
+		}else{
+			return;
+		}
+	}
+	
 	if (content.match(/^study\s+(.*)$/i)) {
 	  var client  = redis.createClient('6379', '127.0.0.1');
 	  
