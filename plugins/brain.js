@@ -18,6 +18,7 @@
 
   module.exports = function(content, send, robot, message) {
     
+	content = content.replace(/(^/s*)/g, "")//针对qq群的一个bug，开头有空格
 	if (content.match(/^study\s+(.*)$/i)) {
 	  var client  = redis.createClient('6379', '127.0.0.1');
 	  

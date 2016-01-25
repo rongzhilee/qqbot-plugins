@@ -20,6 +20,8 @@
    */
 
   module.exports = function(content, send, robot, message) {
+	  
+	content = content.replace(/^\s\s*/, '')//针对qq群的一个bug，开头有空格
     if (content.match(/^help$/i)) {
       send(HELP_INFO);
     }
