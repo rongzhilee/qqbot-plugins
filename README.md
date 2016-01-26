@@ -7,8 +7,8 @@ plugins:
     - apiserver
     - help2
     - brain
-	
-	
+    
+    
 复制 lib 到  /usr/lib/node_modules/smartqq-bot/ 文件夹下
 
 
@@ -34,23 +34,23 @@ redis-server>redis.log &
 
 
 例如:
-	top
-	top 192.168.30.2
-	cmd 192.168.30.2 tail /etc/passwd
-	学习功能说明如下：
-	study 关键字 指令
-	study 列表 ls /home/test
-	study 日志 tail /var/log/messages
-	study 网卡 ifconfig eth0
-	
-	相当于以后输入关键字直接执行指令
-	当然，也可以用来做聊天机器人
-	study 你瞅啥 echo '瞅你咋的'
-	study 再瞅你试试 echo '四四一十六'
-	
-	各位可以自行发挥
-	
+    top
+    top 192.168.30.2
+    cmd 192.168.30.2 tail /etc/passwd
+    学习功能说明如下：
+    study 关键字 指令
+    study 列表 ls /home/test
+    study 日志 tail /var/log/messages
+    study 网卡 ifconfig eth0
+    
+    相当于以后输入关键字直接执行指令
+    当然，也可以用来做聊天机器人
+    study 你瞅啥 echo '瞅你咋的'
+    study 再瞅你试试 echo '四四一十六'
+    
+    各位可以自行发挥
+    
 群或讨论组需要用@开头执行命令否则忽略
 例如:
-	@help
-	@cmd 192.168.30.2 ls /
+    @help
+    @cmd 192.168.30.2 ls /
