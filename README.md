@@ -2,6 +2,14 @@
 
 hubot是一个很不错的想法，自己针对业务需求写了一下插件
 将插件放在plugins 文件夹下并且修改 config.yaml 增加插件名称
+plugins:
+    - debug
+    - apiserver
+    - help2
+    - brain
+	
+	
+复制 lib 到  /usr/lib/node_modules/smartqq-bot/ 文件夹下
 
 
 希望原作者能提供图片的api.
