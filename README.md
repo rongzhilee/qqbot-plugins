@@ -21,6 +21,7 @@ npm install redis
 
 
 功能支持列表
+* help   #显示帮组信息
 * list   #显示支持的主机
 * top #显示当前主机信息
 * cmd ip/user@ip 命令            #执行命令
