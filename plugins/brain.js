@@ -57,7 +57,8 @@
 	if (content.match(/^(?!help|list|top|cmd).*/i)) {
 	  var client  = redis.createClient('6379', '127.0.0.1');
 	  
-      var key = content;
+	  var array = content.split(/\s+/);//只有第一个可能是关键字
+      var key = array[0];
 		client.select('15', function(error){
 		if(error) {
 			send('err:'+error);
