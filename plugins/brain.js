@@ -8,6 +8,7 @@
 (function() {
   var redis   = require('redis');
   var process = require('child_process');
+  var util = require(__dirname+'/../lib/util.js');
 
   /*
    @param content 消息内容
@@ -18,14 +19,18 @@
 
   module.exports = function(content, send, robot, message) {
     
-	content = content.replace(/^\s\s*/, '')//针对qq群的一个bug，开头有空格
-	if(message && ( message.from_group || message.from_discuss )){
-		//如果是组或者讨论组，需要使用@，否则禁言
-		if(content.charAt(0) == '@'){
-			content = content.substring(1);
-		}else{
-			return;
-		}
+	//content = content.replace(/^\s\s*/, '')//针对qq群的一个bug，开头有空格
+	//if(message && ( message.from_group || message.from_discuss )){
+		//如果是组或者讨论组，需要使用#，否则禁言
+		//if(content.charAt(0) == '@'){
+			//content = content.substring(1);
+		//}else{
+			//return;
+		//}
+	//}
+	content = util.formatContent(content,message);
+	if(!content){
+		return;
 	}
 	
 	if (content.match(/^study\s+(.*)$/i)) {
@@ -53,8 +58,76 @@
 		}
 	});
     }
+	if (content.match(/^remember$/i)) {
+		var client  = redis.createClient('6379', '127.0.0.1');
+		client.select('15', function(error){
+			if(error) {
+				send('err:'+error);
+			} else {
+				client.keys('*', function(error, value){
+					if(error) {
+						console.log('err:'+error);
+					} else {
+						console.log(value);
+						send(util.maxLength(value))
+					}
+					// 关闭链接
+					client.end();
+				});
+			}
+		});
+    }
+	if (content.match(/^remember\s+(.+)$/i)) {
+		var client  = redis.createClient('6379', '127.0.0.1');
+		var array = content.split(/\s+/);//只有第一个可能是关键字
+        var key = array[1];
+		client.select('15', function(error){
+			if(error) {
+				send('err:'+error);
+			} else {
+				client.get(key, function(error, value){
+					if(error) {
+						console.log('err:'+error);
+					} else {
+					   if(value){
+							send(util.maxLength(key+" "+value))
+					   }else{
+							send("没发现和"+key+"相关的逻辑")
+					   }
+					}
+					// 关闭链接
+					client.end();
+				});
+			}
+		});
+    }
+	if (content.match(/^forget\s+(.+)$/i)) {
+		var client  = redis.createClient('6379', '127.0.0.1');
+		var array = content.split(/\s+/);//只有第一个可能是关键字
+        var key = array[1];
+		client.select('15', function(error){
+			if(error) {
+				send('err:'+error);
+			} else {
+				client.del(key, function(error, value){
+					if(error) {
+						console.log('err:'+error);
+					} else {
+					   if(value){
+						   send('OK')
+					   }else{
+						   send('NOT FOUND')
+					   }
+					   
+					}
+					// 关闭链接
+					client.end();
+				});
+			}
+		});
+    }
 	// 这个必须最后执行
-	if (content.match(/^(?!help|list|top|cmd).*/i)) {
+	if (content.match(/^(?!help|list|top|cmd|remember|forget).*/i)) {
 	  var client  = redis.createClient('6379', '127.0.0.1');
 	  
 	  var array = content.split(/\s+/);//只有第一个可能是关键字
@@ -73,9 +146,9 @@
 						  cmd=value;
 						  process.exec(cmd,function(err,stdout,stderr){
 								if(err){
-									send(stderr);
+									send(util.maxLength(stderr));
 								}else{
-									send(stdout);
+									send(util.maxLength(stdout));
 								}
 						  });
 					  }else{

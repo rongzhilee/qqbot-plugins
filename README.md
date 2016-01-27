@@ -21,12 +21,17 @@ npm install redis
 
 
 功能支持列表
-* help   #显示帮组信息
 * list   #显示支持的主机
 * top #显示当前主机信息
 * cmd ip/user@ip 命令            #执行命令
 * top ip/user@ip         #显示指定ip主机信息
 * study key value            #学习相关于命令映射
+* 其余语句按学习后的指令来处理
+* remember            #显示记忆的key名称
+* remember key           #显示记忆key具体信息 (key + value)
+* forget key           #删除记忆的key
+另外,现在为了防止由于qq消息过长导致消息发送失败，返回消息超过50字符的部分将用...代替
+
 其余语句按学习后的指令来处理，
 在这之前需要在本机启动一个redis库
 yum install redis
@@ -48,6 +53,9 @@ redis-server>redis.log &
 * study 你瞅啥 echo '瞅你咋的'
 * study 再瞅你试试 echo '四四一十六'
 * 
+* remember
+* remember 日志
+* forget 日志
 * 各位可以自行发挥
 * 
 群或讨论组需要用@开头执行命令否则忽略
